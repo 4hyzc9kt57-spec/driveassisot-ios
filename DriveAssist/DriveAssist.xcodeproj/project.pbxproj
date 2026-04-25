@@ -1,0 +1,394 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BCD23D5B2F9D16A000A00271 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D5A2F9D16A000A00271 /* LocationManager.swift */; };
+		BCE18DF42F9D06440054D0E3 /* DriveAssistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18DF32F9D06440054D0E3 /* DriveAssistApp.swift */; };
+		BCE18DF62F9D06440054D0E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18DF52F9D06440054D0E3 /* ContentView.swift */; };
+		BCE18DF82F9D06480054D0E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCE18DF72F9D06480054D0E3 /* Assets.xcassets */; };
+		BCE18DFB2F9D06480054D0E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCE18DFA2F9D06480054D0E3 /* Preview Assets.xcassets */; };
+		BCE18E092F9D0B010054D0E3 /* ParkingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18E022F9D0B010054D0E3 /* ParkingViewModel.swift */; };
+		BCE18E0A2F9D0B010054D0E3 /* CarPark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18E042F9D0B010054D0E3 /* CarPark.swift */; };
+		BCE18E0B2F9D0B010054D0E3 /* ParkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18E062F9D0B010054D0E3 /* ParkingService.swift */; };
+		BCE18E0C2F9D0B010054D0E3 /* ParkingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18E082F9D0B010054D0E3 /* ParkingListView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BCD23D5A2F9D16A000A00271 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		BCE18DF02F9D06440054D0E3 /* DriveAssist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveAssist.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCE18DF32F9D06440054D0E3 /* DriveAssistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAssistApp.swift; sourceTree = "<group>"; };
+		BCE18DF52F9D06440054D0E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BCE18DF72F9D06480054D0E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BCE18DFA2F9D06480054D0E3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BCE18E022F9D0B010054D0E3 /* ParkingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingViewModel.swift; sourceTree = "<group>"; };
+		BCE18E042F9D0B010054D0E3 /* CarPark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarPark.swift; sourceTree = "<group>"; };
+		BCE18E062F9D0B010054D0E3 /* ParkingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingService.swift; sourceTree = "<group>"; };
+		BCE18E082F9D0B010054D0E3 /* ParkingListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingListView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BCE18DED2F9D06440054D0E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BCE18DE72F9D06440054D0E3 = {
+			isa = PBXGroup;
+			children = (
+				BCE18DF22F9D06440054D0E3 /* DriveAssist */,
+				BCE18DF12F9D06440054D0E3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCE18DF12F9D06440054D0E3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCE18DF02F9D06440054D0E3 /* DriveAssist.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCE18DF22F9D06440054D0E3 /* DriveAssist */ = {
+			isa = PBXGroup;
+			children = (
+				BCE18E032F9D0B010054D0E3 /* Models */,
+				BCE18E052F9D0B010054D0E3 /* Services */,
+				BCE18E012F9D0B010054D0E3 /* ViewModels */,
+				BCE18E072F9D0B010054D0E3 /* Views */,
+				BCE18DF32F9D06440054D0E3 /* DriveAssistApp.swift */,
+				BCE18DF52F9D06440054D0E3 /* ContentView.swift */,
+				BCE18DF72F9D06480054D0E3 /* Assets.xcassets */,
+				BCE18DF92F9D06480054D0E3 /* Preview Content */,
+			);
+			path = DriveAssist;
+			sourceTree = "<group>";
+		};
+		BCE18DF92F9D06480054D0E3 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BCE18DFA2F9D06480054D0E3 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BCE18E012F9D0B010054D0E3 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BCE18E022F9D0B010054D0E3 /* ParkingViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = SOURCE_ROOT;
+		};
+		BCE18E032F9D0B010054D0E3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BCE18E042F9D0B010054D0E3 /* CarPark.swift */,
+			);
+			path = Models;
+			sourceTree = SOURCE_ROOT;
+		};
+		BCE18E052F9D0B010054D0E3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BCD23D5A2F9D16A000A00271 /* LocationManager.swift */,
+				BCE18E062F9D0B010054D0E3 /* ParkingService.swift */,
+			);
+			path = Services;
+			sourceTree = SOURCE_ROOT;
+		};
+		BCE18E072F9D0B010054D0E3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BCE18E082F9D0B010054D0E3 /* ParkingListView.swift */,
+			);
+			path = Views;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BCE18DEF2F9D06440054D0E3 /* DriveAssist */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCE18DFE2F9D06480054D0E3 /* Build configuration list for PBXNativeTarget "DriveAssist" */;
+			buildPhases = (
+				BCE18DEC2F9D06440054D0E3 /* Sources */,
+				BCE18DED2F9D06440054D0E3 /* Frameworks */,
+				BCE18DEE2F9D06440054D0E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DriveAssist;
+			productName = DriveAssist;
+			productReference = BCE18DF02F9D06440054D0E3 /* DriveAssist.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BCE18DE82F9D06440054D0E3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					BCE18DEF2F9D06440054D0E3 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = BCE18DEB2F9D06440054D0E3 /* Build configuration list for PBXProject "DriveAssist" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BCE18DE72F9D06440054D0E3;
+			productRefGroup = BCE18DF12F9D06440054D0E3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BCE18DEF2F9D06440054D0E3 /* DriveAssist */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCE18DEE2F9D06440054D0E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCE18DFB2F9D06480054D0E3 /* Preview Assets.xcassets in Resources */,
+				BCE18DF82F9D06480054D0E3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCE18DEC2F9D06440054D0E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCE18E0A2F9D0B010054D0E3 /* CarPark.swift in Sources */,
+				BCE18E0C2F9D0B010054D0E3 /* ParkingListView.swift in Sources */,
+				BCE18E092F9D0B010054D0E3 /* ParkingViewModel.swift in Sources */,
+				BCD23D5B2F9D16A000A00271 /* LocationManager.swift in Sources */,
+				BCE18DF62F9D06440054D0E3 /* ContentView.swift in Sources */,
+				BCE18DF42F9D06440054D0E3 /* DriveAssistApp.swift in Sources */,
+				BCE18E0B2F9D0B010054D0E3 /* ParkingService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BCE18DFC2F9D06480054D0E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BCE18DFD2F9D06480054D0E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BCE18DFF2F9D06480054D0E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DriveAssist/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.plan7.DriveAssist;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BCE18E002F9D06480054D0E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DriveAssist/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.plan7.DriveAssist;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BCE18DEB2F9D06440054D0E3 /* Build configuration list for PBXProject "DriveAssist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCE18DFC2F9D06480054D0E3 /* Debug */,
+				BCE18DFD2F9D06480054D0E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCE18DFE2F9D06480054D0E3 /* Build configuration list for PBXNativeTarget "DriveAssist" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCE18DFF2F9D06480054D0E3 /* Debug */,
+				BCE18E002F9D06480054D0E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BCE18DE82F9D06440054D0E3 /* Project object */;
+}
