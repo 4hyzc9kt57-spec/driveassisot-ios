@@ -21,6 +21,10 @@ class ParkingViewModel: ObservableObject {
         }
     }
 
+    func refresh() async {
+        await loadFromGPS()
+    }
+
     func load(lat: Double, lng: Double) async {
         isLoading = true
         errorMessage = nil

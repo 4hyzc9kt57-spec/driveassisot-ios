@@ -2,12 +2,13 @@ import SwiftUI
 
 struct ParkingListView: View {
     @StateObject private var vm = ParkingViewModel()
+    @State private var showMap = false
 
     var body: some View {
         NavigationView {
             Group {
                 if vm.isLoading {
-                    ProgressView("定位中...")
+                    ProgressView("定位中 ...")
                 } else if let error = vm.errorMessage {
                     Text("錯誤：\(error)").foregroundColor(.red)
                 } else {
@@ -33,9 +34,31 @@ struct ParkingListView: View {
                         }
                         .padding(.vertical, 4)
                     }
+                    .refreshable {
+                        await vm.refresh()
+                    }
                 }
             }
             .navigationTitle("附近停車場")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showMap = true
+                    } label: {
+                        Image(systemName: "map")
+                    }
+                }
+            }
+            .sheet(isPresented: $showMap) {
+                NavigationView {
+                    ParkingMapView(vm: vm)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button("關閉") { showMap = false }
+                            }
+                        }
+                }
+            }
             .task {
                 await vm.loadFromGPS()
             }

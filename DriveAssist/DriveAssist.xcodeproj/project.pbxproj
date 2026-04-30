@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BCD23D5B2F9D16A000A00271 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D5A2F9D16A000A00271 /* LocationManager.swift */; };
+		BCD23D5D2FA3A0BE00A00271 /* ParkingMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D5C2FA3A0BD00A00271 /* ParkingMapView.swift */; };
 		BCE18DF42F9D06440054D0E3 /* DriveAssistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18DF32F9D06440054D0E3 /* DriveAssistApp.swift */; };
 		BCE18DF62F9D06440054D0E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18DF52F9D06440054D0E3 /* ContentView.swift */; };
 		BCE18DF82F9D06480054D0E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCE18DF72F9D06480054D0E3 /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		BCD23D5A2F9D16A000A00271 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		BCD23D5C2FA3A0BD00A00271 /* ParkingMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParkingMapView.swift; path = Views/ParkingMapView.swift; sourceTree = "<group>"; };
 		BCE18DF02F9D06440054D0E3 /* DriveAssist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveAssist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCE18DF32F9D06440054D0E3 /* DriveAssistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAssistApp.swift; sourceTree = "<group>"; };
 		BCE18DF52F9D06440054D0E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,6 +47,7 @@
 		BCE18DE72F9D06440054D0E3 = {
 			isa = PBXGroup;
 			children = (
+				BCD23D5C2FA3A0BD00A00271 /* ParkingMapView.swift */,
 				BCE18DF22F9D06440054D0E3 /* DriveAssist */,
 				BCE18DF12F9D06440054D0E3 /* Products */,
 			);
@@ -188,6 +191,7 @@
 				BCE18E0C2F9D0B010054D0E3 /* ParkingListView.swift in Sources */,
 				BCE18E092F9D0B010054D0E3 /* ParkingViewModel.swift in Sources */,
 				BCD23D5B2F9D16A000A00271 /* LocationManager.swift in Sources */,
+				BCD23D5D2FA3A0BE00A00271 /* ParkingMapView.swift in Sources */,
 				BCE18DF62F9D06440054D0E3 /* ContentView.swift in Sources */,
 				BCE18DF42F9D06440054D0E3 /* DriveAssistApp.swift in Sources */,
 				BCE18E0B2F9D0B010054D0E3 /* ParkingService.swift in Sources */,
