@@ -15,6 +15,16 @@
 		BCD23D652FA3A7F000A00271 /* SpeedCameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D632FA3A7F000A00271 /* SpeedCameraService.swift */; };
 		BCD23D682FA3A80300A00271 /* SpeedCameraListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D662FA3A80300A00271 /* SpeedCameraListView.swift */; };
 		BCD23D692FA3A80300A00271 /* HighwaySectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D672FA3A80300A00271 /* HighwaySectionListView.swift */; };
+		BCD23D712FA3AC1700A00271 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD23D702FA3AC1700A00271 /* WidgetKit.framework */; };
+		BCD23D732FA3AC1700A00271 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD23D722FA3AC1700A00271 /* SwiftUI.framework */; };
+		BCD23D762FA3AC1700A00271 /* DirveassistWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D752FA3AC1700A00271 /* DirveassistWidgetBundle.swift */; };
+		BCD23D782FA3AC1700A00271 /* DirveassistWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D772FA3AC1700A00271 /* DirveassistWidgetLiveActivity.swift */; };
+		BCD23D7A2FA3AC1700A00271 /* DirveassistWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D792FA3AC1700A00271 /* DirveassistWidget.swift */; };
+		BCD23D7C2FA3AC1D00A00271 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCD23D7B2FA3AC1D00A00271 /* Assets.xcassets */; };
+		BCD23D802FA3AC1D00A00271 /* DirveassistWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BCD23D6E2FA3AC1700A00271 /* DirveassistWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BCD23D872FA3B08F00A00271 /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D862FA3B08F00A00271 /* LiveActivityManager.swift */; };
+		BCD23D892FA3B13E00A00271 /* DriveAssistAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D882FA3B13E00A00271 /* DriveAssistAttributes.swift */; };
+		BCD23D8A2FA3B13E00A00271 /* DriveAssistAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D882FA3B13E00A00271 /* DriveAssistAttributes.swift */; };
 		BCE18DF42F9D06440054D0E3 /* DriveAssistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18DF32F9D06440054D0E3 /* DriveAssistApp.swift */; };
 		BCE18DF62F9D06440054D0E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18DF52F9D06440054D0E3 /* ContentView.swift */; };
 		BCE18DF82F9D06480054D0E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCE18DF72F9D06480054D0E3 /* Assets.xcassets */; };
@@ -25,6 +35,30 @@
 		BCE18E0C2F9D0B010054D0E3 /* ParkingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE18E082F9D0B010054D0E3 /* ParkingListView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BCD23D7E2FA3AC1D00A00271 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCE18DE82F9D06440054D0E3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCD23D6D2FA3AC1700A00271;
+			remoteInfo = DirveassistWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BCD23D842FA3AC1D00A00271 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BCD23D802FA3AC1D00A00271 /* DirveassistWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		BCD23D5A2F9D16A000A00271 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		BCD23D5C2FA3A0BD00A00271 /* ParkingMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParkingMapView.swift; path = Views/ParkingMapView.swift; sourceTree = "<group>"; };
@@ -34,6 +68,17 @@
 		BCD23D632FA3A7F000A00271 /* SpeedCameraService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeedCameraService.swift; sourceTree = "<group>"; };
 		BCD23D662FA3A80300A00271 /* SpeedCameraListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeedCameraListView.swift; sourceTree = "<group>"; };
 		BCD23D672FA3A80300A00271 /* HighwaySectionListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighwaySectionListView.swift; sourceTree = "<group>"; };
+		BCD23D6E2FA3AC1700A00271 /* DirveassistWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DirveassistWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCD23D702FA3AC1700A00271 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		BCD23D722FA3AC1700A00271 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		BCD23D752FA3AC1700A00271 /* DirveassistWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirveassistWidgetBundle.swift; sourceTree = "<group>"; };
+		BCD23D772FA3AC1700A00271 /* DirveassistWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirveassistWidgetLiveActivity.swift; sourceTree = "<group>"; };
+		BCD23D792FA3AC1700A00271 /* DirveassistWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirveassistWidget.swift; sourceTree = "<group>"; };
+		BCD23D7B2FA3AC1D00A00271 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BCD23D7D2FA3AC1D00A00271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCD23D852FA3AF2000A00271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCD23D862FA3B08F00A00271 /* LiveActivityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
+		BCD23D882FA3B13E00A00271 /* DriveAssistAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriveAssistAttributes.swift; sourceTree = "<group>"; };
 		BCE18DF02F9D06440054D0E3 /* DriveAssist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriveAssist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCE18DF32F9D06440054D0E3 /* DriveAssistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveAssistApp.swift; sourceTree = "<group>"; };
 		BCE18DF52F9D06440054D0E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +91,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BCD23D6B2FA3AC1700A00271 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCD23D732FA3AC1700A00271 /* SwiftUI.framework in Frameworks */,
+				BCD23D712FA3AC1700A00271 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCE18DED2F9D06440054D0E3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,11 +110,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BCD23D6F2FA3AC1700A00271 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCD23D702FA3AC1700A00271 /* WidgetKit.framework */,
+				BCD23D722FA3AC1700A00271 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BCD23D742FA3AC1700A00271 /* DirveassistWidget */ = {
+			isa = PBXGroup;
+			children = (
+				BCD23D752FA3AC1700A00271 /* DirveassistWidgetBundle.swift */,
+				BCD23D772FA3AC1700A00271 /* DirveassistWidgetLiveActivity.swift */,
+				BCD23D792FA3AC1700A00271 /* DirveassistWidget.swift */,
+				BCD23D7B2FA3AC1D00A00271 /* Assets.xcassets */,
+				BCD23D7D2FA3AC1D00A00271 /* Info.plist */,
+			);
+			path = DirveassistWidget;
+			sourceTree = "<group>";
+		};
 		BCE18DE72F9D06440054D0E3 = {
 			isa = PBXGroup;
 			children = (
 				BCD23D5C2FA3A0BD00A00271 /* ParkingMapView.swift */,
 				BCE18DF22F9D06440054D0E3 /* DriveAssist */,
+				BCD23D742FA3AC1700A00271 /* DirveassistWidget */,
+				BCD23D6F2FA3AC1700A00271 /* Frameworks */,
 				BCE18DF12F9D06440054D0E3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				BCE18DF02F9D06440054D0E3 /* DriveAssist.app */,
+				BCD23D6E2FA3AC1700A00271 /* DirveassistWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +154,7 @@
 		BCE18DF22F9D06440054D0E3 /* DriveAssist */ = {
 			isa = PBXGroup;
 			children = (
+				BCD23D852FA3AF2000A00271 /* Info.plist */,
 				BCE18E032F9D0B010054D0E3 /* Models */,
 				BCE18E052F9D0B010054D0E3 /* Services */,
 				BCE18E012F9D0B010054D0E3 /* ViewModels */,
@@ -117,6 +196,8 @@
 		BCE18E052F9D0B010054D0E3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				BCD23D882FA3B13E00A00271 /* DriveAssistAttributes.swift */,
+				BCD23D862FA3B08F00A00271 /* LiveActivityManager.swift */,
 				BCD23D622FA3A7F000A00271 /* HighwayService.swift */,
 				BCD23D632FA3A7F000A00271 /* SpeedCameraService.swift */,
 				BCD23D5A2F9D16A000A00271 /* LocationManager.swift */,
@@ -138,6 +219,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BCD23D6D2FA3AC1700A00271 /* DirveassistWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCD23D812FA3AC1D00A00271 /* Build configuration list for PBXNativeTarget "DirveassistWidgetExtension" */;
+			buildPhases = (
+				BCD23D6A2FA3AC1700A00271 /* Sources */,
+				BCD23D6B2FA3AC1700A00271 /* Frameworks */,
+				BCD23D6C2FA3AC1700A00271 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DirveassistWidgetExtension;
+			productName = DirveassistWidgetExtension;
+			productReference = BCD23D6E2FA3AC1700A00271 /* DirveassistWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		BCE18DEF2F9D06440054D0E3 /* DriveAssist */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BCE18DFE2F9D06480054D0E3 /* Build configuration list for PBXNativeTarget "DriveAssist" */;
@@ -145,10 +243,12 @@
 				BCE18DEC2F9D06440054D0E3 /* Sources */,
 				BCE18DED2F9D06440054D0E3 /* Frameworks */,
 				BCE18DEE2F9D06440054D0E3 /* Resources */,
+				BCD23D842FA3AC1D00A00271 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BCD23D7F2FA3AC1D00A00271 /* PBXTargetDependency */,
 			);
 			name = DriveAssist;
 			productName = DriveAssist;
@@ -165,6 +265,9 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					BCD23D6D2FA3AC1700A00271 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
 					BCE18DEF2F9D06440054D0E3 = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
@@ -184,11 +287,20 @@
 			projectRoot = "";
 			targets = (
 				BCE18DEF2F9D06440054D0E3 /* DriveAssist */,
+				BCD23D6D2FA3AC1700A00271 /* DirveassistWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BCD23D6C2FA3AC1700A00271 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCD23D7C2FA3AC1D00A00271 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCE18DEE2F9D06440054D0E3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -201,6 +313,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BCD23D6A2FA3AC1700A00271 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCD23D7A2FA3AC1700A00271 /* DirveassistWidget.swift in Sources */,
+				BCD23D782FA3AC1700A00271 /* DirveassistWidgetLiveActivity.swift in Sources */,
+				BCD23D8A2FA3B13E00A00271 /* DriveAssistAttributes.swift in Sources */,
+				BCD23D762FA3AC1700A00271 /* DirveassistWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BCE18DEC2F9D06440054D0E3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -213,18 +336,80 @@
 				BCE18E0C2F9D0B010054D0E3 /* ParkingListView.swift in Sources */,
 				BCD23D602FA3A7D000A00271 /* HighwaySection.swift in Sources */,
 				BCE18E092F9D0B010054D0E3 /* ParkingViewModel.swift in Sources */,
+				BCD23D872FA3B08F00A00271 /* LiveActivityManager.swift in Sources */,
 				BCD23D5B2F9D16A000A00271 /* LocationManager.swift in Sources */,
 				BCD23D5D2FA3A0BE00A00271 /* ParkingMapView.swift in Sources */,
 				BCD23D682FA3A80300A00271 /* SpeedCameraListView.swift in Sources */,
 				BCE18DF62F9D06440054D0E3 /* ContentView.swift in Sources */,
 				BCE18DF42F9D06440054D0E3 /* DriveAssistApp.swift in Sources */,
+				BCD23D892FA3B13E00A00271 /* DriveAssistAttributes.swift in Sources */,
 				BCE18E0B2F9D0B010054D0E3 /* ParkingService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		BCD23D7F2FA3AC1D00A00271 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BCD23D6D2FA3AC1700A00271 /* DirveassistWidgetExtension */;
+			targetProxy = BCD23D7E2FA3AC1D00A00271 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		BCD23D822FA3AC1D00A00271 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DirveassistWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DirveassistWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.plan7.DriveAssist.DirveassistWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BCD23D832FA3AC1D00A00271 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DirveassistWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DirveassistWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.plan7.DriveAssist.DirveassistWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		BCE18DFC2F9D06480054D0E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -342,6 +527,7 @@
 		BCE18DFF2F9D06480054D0E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -349,6 +535,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DriveAssist/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DriveAssist/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -370,6 +560,7 @@
 		BCE18E002F9D06480054D0E3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -377,6 +568,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DriveAssist/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DriveAssist/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -398,6 +593,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BCD23D812FA3AC1D00A00271 /* Build configuration list for PBXNativeTarget "DirveassistWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCD23D822FA3AC1D00A00271 /* Debug */,
+				BCD23D832FA3AC1D00A00271 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BCE18DEB2F9D06440054D0E3 /* Build configuration list for PBXProject "DriveAssist" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
