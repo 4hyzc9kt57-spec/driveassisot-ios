@@ -10,13 +10,17 @@ struct ParkingListView: View {
                 if vm.isLoading {
                     ProgressView("定位中 ...")
                 } else if let error = vm.errorMessage {
-                    Text("錯誤：\(error)").foregroundColor(.red)
+                    VStack(spacing: 16) {
+                        Text("錯誤：\(error)").foregroundColor(.red)
+                        Button("重試") {
+                            Task { await vm.loadFromGPS() }
+                        }
+                    }
                 } else {
                     List(vm.carParks) { park in
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(park.name)
-                                    .font(.headline)
+                                Text(park.name).font(.headline)
                                 HStack(spacing: 8) {
                                     if let avail = park.avail {
                                         Label("\(avail) 格可用", systemImage: "car.fill")
@@ -32,7 +36,6 @@ struct ParkingListView: View {
                             }
                             Spacer()
                         }
-                        .padding(.vertical, 4)
                     }
                     .refreshable {
                         await vm.refresh()
@@ -59,8 +62,8 @@ struct ParkingListView: View {
                         }
                 }
             }
-            .task {
-                await vm.loadFromGPS()
+            .onAppear {
+                Task { await vm.loadFromGPS() }
             }
         }
     }

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>行車助手需要取用您的位置，以顯示附近停車場與即時行車資訊。</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>行車助手需要在背景持續取用位置，以在動態島顯示即時速限與停車資訊。</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>行車助手需要在背景持續取用位置，以在動態島顯示即時速限與停車資訊。</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+</dict>
 </plist>

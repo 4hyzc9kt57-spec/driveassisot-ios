@@ -11,11 +11,12 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         super.init()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.allowsBackgroundLocationUpdates = true
+        manager.pausesLocationUpdatesAutomatically = false
     }
 
     func requestLocation() {
-        manager.requestWhenInUseAuthorization()
-        manager.requestLocation()
+        manager.requestAlwaysAuthorization()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -28,8 +29,13 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         authStatus = manager.authorizationStatus
-        if authStatus == .authorizedWhenInUse {
-            manager.requestLocation()
+        switch authStatus {
+        case .authorizedWhenInUse:
+            manager.requestAlwaysAuthorization()
+        case .authorizedAlways:
+            manager.startUpdatingLocation()
+        default:
+            break
         }
     }
 }

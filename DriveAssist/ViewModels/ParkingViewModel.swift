@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import Combine
 
 @MainActor
 class ParkingViewModel: ObservableObject {
@@ -13,10 +14,20 @@ class ParkingViewModel: ObservableObject {
     }
 
     func loadFromGPS() async {
+        isLoading = true
+        errorMessage = nil
+
+        // 等待位置，最多10秒
+        var waited = 0
+        while locationManager.location == nil && waited < 20 {
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            waited += 1
+        }
+
         if let loc = locationManager.location {
             await load(lat: loc.coordinate.latitude, lng: loc.coordinate.longitude)
         } else {
-            // GPS 尚未取得，用台北信義區當備用
+            // 逾時用台北信義區備用
             await load(lat: 25.0478, lng: 121.5318)
         }
     }
@@ -26,8 +37,6 @@ class ParkingViewModel: ObservableObject {
     }
 
     func load(lat: Double, lng: Double) async {
-        isLoading = true
-        errorMessage = nil
         do {
             carParks = try await ParkingService.shared.fetchNearby(lat: lat, lng: lng)
         } catch {
