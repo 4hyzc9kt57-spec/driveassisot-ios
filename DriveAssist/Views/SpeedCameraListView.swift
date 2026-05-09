@@ -1,49 +1,49 @@
 import SwiftUI
 
 struct SpeedCameraListView: View {
-    @State private var cameras: [SpeedCamera] = []
-    @State private var isLoading = false
-    @State private var errorMessage: String?
+    @StateObject private var vm = SpeedCameraViewModel()
 
     var body: some View {
         NavigationView {
             Group {
-                if isLoading {
-                    ProgressView("載入中 ...")
-                } else if let error = errorMessage {
-                    Text("錯誤：\(error)").foregroundColor(.red)
+                if vm.isLoading {
+                    ProgressView("定位中 ...")
+                } else if let error = vm.errorMessage {
+                    VStack(spacing: 16) {
+                        Text(error).foregroundColor(.secondary).multilineTextAlignment(.center)
+                        Button("重試") {
+                            Task { await vm.loadFromGPS() }
+                        }
+                    }
+                    .padding()
                 } else {
-                    List(cameras) { cam in
+                    List(vm.cameras) { cam in
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(cam.road)
                                     .font(.headline)
                                     .lineLimit(2)
-                                Label("速限 \(cam.limit) km/h", systemImage: "speedometer")
-                                    .font(.subheadline)
-                                    .foregroundColor(limitColor(cam.limit))
+                                HStack(spacing: 8) {
+                                    Label("速限 \(cam.limit) km/h", systemImage: "speedometer")
+                                        .font(.subheadline)
+                                        .foregroundColor(limitColor(cam.limit))
+                                    if let dist = cam.dist {
+                                        Text("\(dist) m")
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
                             }
                             Spacer()
                         }
                         .padding(.vertical, 4)
                     }
-                    .refreshable { await load() }
+                    .refreshable { await vm.refresh() }
                 }
             }
             .navigationTitle("測速照相")
-            .task { await load() }
+            .task { await vm.loadFromGPS() }
         }
-    }
-
-    func load() async {
-        isLoading = true
-        errorMessage = nil
-        do {
-            cameras = try await SpeedCameraService.shared.fetchAll()
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        isLoading = false
     }
 
     func limitColor(_ limit: Int) -> Color {

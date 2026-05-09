@@ -1,10 +1,9 @@
 import Foundation
 import CoreLocation
-import Combine
 
 @MainActor
-class ParkingViewModel: ObservableObject {
-    @Published var carParks: [CarPark] = []
+class SpeedCameraViewModel: ObservableObject {
+    @Published var cameras: [SpeedCamera] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var locationManager = LocationManager()
@@ -17,7 +16,6 @@ class ParkingViewModel: ObservableObject {
 
     func loadFromGPS() async {
         currentTask?.cancel()
-
         currentTask = Task {
             defer { isLoading = false }
             isLoading = true
@@ -38,7 +36,6 @@ class ParkingViewModel: ObservableObject {
                 errorMessage = "無法取得位置，請確認定位權限"
             }
         }
-
         await currentTask?.value
     }
 
@@ -49,9 +46,9 @@ class ParkingViewModel: ObservableObject {
     func load(lat: Double, lng: Double) async {
         guard !Task.isCancelled else { return }
         do {
-            carParks = try await ParkingService.shared.fetchNearby(lat: lat, lng: lng)
-            if carParks.isEmpty {
-                errorMessage = "此區域尚無停車場資料（目前支援台北、新北、台中、台南、高雄）"
+            cameras = try await SpeedCameraService.shared.fetchNearby(lat: lat, lng: lng)
+            if cameras.isEmpty {
+                errorMessage = "附近 5km 內無測速照相"
             }
         } catch {
             if (error as? URLError)?.code == .cancelled { return }

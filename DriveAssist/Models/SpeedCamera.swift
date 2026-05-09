@@ -8,6 +8,7 @@ struct SpeedCamera: Identifiable, Codable {
     let lon: Double
     let az: Int?
     let lane: Int?
+    let dist: Int?
 }
 
 struct SpeedCameraResponse: Codable {

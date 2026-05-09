@@ -62,8 +62,10 @@ struct ParkingListView: View {
                         }
                 }
             }
-            .onAppear {
-                Task { await vm.loadFromGPS() }
+            // 改用 .task{} 取代 onAppear + Task{}
+            // View disappear 時自動取消，不會重疊
+            .task {
+                await vm.loadFromGPS()
             }
         }
     }
