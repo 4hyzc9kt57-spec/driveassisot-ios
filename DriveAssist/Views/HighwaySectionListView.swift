@@ -1,10 +1,12 @@
 import SwiftUI
+import CoreLocation
 
 struct HighwaySectionListView: View {
     @State private var sections: [HighwaySection] = []
     @State private var isLoading = false
     @State private var errorMessage: String?
     @State private var directionFilter: DirectionFilter = .all
+    @State private var isSortingByGPS = false
 
     enum DirectionFilter: String, CaseIterable {
         case all = "全部"
@@ -33,7 +35,7 @@ struct HighwaySectionListView: View {
         NavigationView {
             Group {
                 if isLoading {
-                    ProgressView("載入中 ...")
+                    ProgressView(isSortingByGPS ? "定位中 ..." : "載入中 ...")
                 } else if let error = errorMessage {
                     Text("錯誤：\(error)").foregroundColor(.red)
                 } else {
@@ -80,32 +82,58 @@ struct HighwaySectionListView: View {
         }
     }
 
-    // 依公里數由小到大排序
     func loadNearestFirst() async {
+        isSortingByGPS = true
         isLoading = true
         errorMessage = nil
         do {
             let all = try await HighwayService.shared.fetchSections()
-            sections = all.sorted { a, b in
-                kmFromId(a.id) < kmFromId(b.id)
+            let location = await getCurrentLocation()
+            if let loc = location {
+                sections = all.sorted { a, b in
+                    let da = distanceToSection(from: loc, section: a)
+                    let db = distanceToSection(from: loc, section: b)
+                    return da < db
+                }
+            } else {
+                sections = all
+                errorMessage = "無法取得定位，顯示預設排序"
             }
         } catch {
             errorMessage = error.localizedDescription
         }
         isLoading = false
+        isSortingByGPS = false
     }
 
-    // 從 ID 解析公里數，例如 VD-N1-N-86.120-M-LOOP → 86.12
-    func kmFromId(_ id: String) -> Double {
-        let parts = id.components(separatedBy: "-")
-        for (i, part) in parts.enumerated() {
-            if part.hasPrefix("N"), Int(part.dropFirst()) != nil {
-                if i + 2 < parts.count, let km = Double(parts[i + 2]) {
-                    return km
+    func distanceToSection(from loc: CLLocation, section: HighwaySection) -> CLLocationDistance {
+        guard let lat = section.lat, let lon = section.lon else {
+            return CLLocationDistance.greatestFiniteMagnitude
+        }
+        let target = CLLocation(latitude: lat, longitude: lon)
+        return loc.distance(from: target)
+    }
+
+    func getCurrentLocation() async -> CLLocation? {
+        await withCheckedContinuation { continuation in
+            let mgr = CLLocationManager()
+            class Delegate: NSObject, CLLocationManagerDelegate {
+                var cont: CheckedContinuation<CLLocation?, Never>
+                init(_ c: CheckedContinuation<CLLocation?, Never>) { cont = c }
+                func locationManager(_ m: CLLocationManager, didUpdateLocations locs: [CLLocation]) {
+                    cont.resume(returning: locs.last)
+                    m.stopUpdatingLocation()
+                }
+                func locationManager(_ m: CLLocationManager, didFailWithError error: Error) {
+                    cont.resume(returning: nil)
                 }
             }
+            let d = Delegate(continuation)
+            mgr.delegate = d
+            mgr.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            mgr.requestLocation()
+            objc_setAssociatedObject(mgr, "delegate", d, .OBJC_ASSOCIATION_RETAIN)
         }
-        return Double.infinity
     }
 
     func parseName(_ id: String, fallback: String) -> String {

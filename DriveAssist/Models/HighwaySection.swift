@@ -7,6 +7,8 @@ struct HighwaySection: Identifiable, Codable {
     let speed: Int
     let level: Int
     let updated: String?
+    let lat: Double?
+    let lon: Double?
 }
 
 struct HighwayData: Codable {
