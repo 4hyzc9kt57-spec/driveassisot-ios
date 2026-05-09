@@ -7,6 +7,7 @@ struct HighwaySectionListView: View {
     @State private var errorMessage: String?
     @State private var directionFilter: DirectionFilter = .all
     @State private var isSortingByGPS = false
+    @State private var nearestInfo: String? = nil
 
     enum DirectionFilter: String, CaseIterable {
         case all = "全部"
@@ -14,20 +15,19 @@ struct HighwaySectionListView: View {
         case southWest = "南下／西行"
     }
 
-    var filteredSections: [HighwaySection] {
+    var filteredAndSorted: [HighwaySection] {
+        let merged = mergeSections(sections)
         switch directionFilter {
         case .all:
-            return sections
+            return merged
         case .northEast:
-            return sections.filter { sec in
-                let id = sec.id.uppercased()
-                return id.contains("-N-") || id.contains("-E-")
-            }
+            return merged
+                .filter { $0.id.uppercased().contains("-N-") || $0.id.uppercased().contains("-E-") }
+                .sorted { kmFromId($0.id) > kmFromId($1.id) }
         case .southWest:
-            return sections.filter { sec in
-                let id = sec.id.uppercased()
-                return id.contains("-S-") || id.contains("-W-")
-            }
+            return merged
+                .filter { $0.id.uppercased().contains("-S-") || $0.id.uppercased().contains("-W-") }
+                .sorted { kmFromId($0.id) < kmFromId($1.id) }
         }
     }
 
@@ -40,6 +40,21 @@ struct HighwaySectionListView: View {
                     Text("錯誤：\(error)").foregroundColor(.red)
                 } else {
                     VStack(spacing: 0) {
+                        if let info = nearestInfo {
+                            HStack {
+                                Image(systemName: "location.fill")
+                                    .foregroundColor(.blue)
+                                    .font(.caption)
+                                Text(info)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 6)
+                            .background(Color.blue.opacity(0.08))
+                        }
+
                         Picker("方向", selection: $directionFilter) {
                             ForEach(DirectionFilter.allCases, id: \.self) { f in
                                 Text(f.rawValue).tag(f)
@@ -49,7 +64,7 @@ struct HighwaySectionListView: View {
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
 
-                        List(filteredSections) { sec in
+                        List(filteredAndSorted) { sec in
                             HStack {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(parseName(sec.id, fallback: sec.name))
@@ -82,18 +97,62 @@ struct HighwaySectionListView: View {
         }
     }
 
+    func mergeSections(_ input: [HighwaySection]) -> [HighwaySection] {
+        var groups: [String: [HighwaySection]] = [:]
+        for sec in input {
+            let parts = sec.id.components(separatedBy: "-")
+            var key = sec.id
+            if parts.count >= 4 {
+                key = "\(parts[0])-\(parts[1])-\(parts[2])-\(parts[3])"
+            }
+            groups[key, default: []].append(sec)
+        }
+        return groups.map { _, group in
+            let avgSpeed = group.map { $0.speed }.reduce(0, +) / group.count
+            let base = group[0]
+            return HighwaySection(
+                id: base.id,
+                name: base.name,
+                dir: base.dir,
+                speed: avgSpeed,
+                level: congestionLevel(avgSpeed),
+                updated: base.updated,
+                lat: base.lat,
+                lon: base.lon
+            )
+        }.sorted { kmFromId($0.id) < kmFromId($1.id) }
+    }
+
+    func congestionLevel(_ speed: Int) -> Int {
+        if speed >= 60 { return 0 }
+        if speed >= 30 { return 1 }
+        return 2
+    }
+
     func loadNearestFirst() async {
         isSortingByGPS = true
         isLoading = true
         errorMessage = nil
+        nearestInfo = nil
         do {
             let all = try await HighwayService.shared.fetchSections()
             let location = await getCurrentLocation()
             if let loc = location {
-                sections = all.sorted { a, b in
-                    let da = distanceToSection(from: loc, section: a)
-                    let db = distanceToSection(from: loc, section: b)
-                    return da < db
+                let nearest = all
+                    .filter { $0.lat != nil && $0.lon != nil }
+                    .min { a, b in
+                        distanceToSection(from: loc, section: a) < distanceToSection(from: loc, section: b)
+                    }
+                if let n = nearest {
+                    let km = kmFromId(n.id)
+                    let highway = highwayNameFromId(n.id)
+                    nearestInfo = "目前位置約 \(highway) \(String(format: "%.1f", km)) km 附近"
+                    sections = all.sorted { a, b in
+                        distanceToSection(from: loc, section: a) < distanceToSection(from: loc, section: b)
+                    }
+                } else {
+                    sections = all
+                    nearestInfo = "無法比對座標，顯示預設排序"
                 }
             } else {
                 sections = all
@@ -110,8 +169,7 @@ struct HighwaySectionListView: View {
         guard let lat = section.lat, let lon = section.lon else {
             return CLLocationDistance.greatestFiniteMagnitude
         }
-        let target = CLLocation(latitude: lat, longitude: lon)
-        return loc.distance(from: target)
+        return loc.distance(from: CLLocation(latitude: lat, longitude: lon))
     }
 
     func getCurrentLocation() async -> CLLocation? {
@@ -134,6 +192,28 @@ struct HighwaySectionListView: View {
             mgr.requestLocation()
             objc_setAssociatedObject(mgr, "delegate", d, .OBJC_ASSOCIATION_RETAIN)
         }
+    }
+
+    func kmFromId(_ id: String) -> Double {
+        let parts = id.components(separatedBy: "-")
+        for (i, part) in parts.enumerated() {
+            if part.hasPrefix("N"), Int(part.dropFirst()) != nil {
+                if i + 2 < parts.count, let km = Double(parts[i + 2]) {
+                    return km
+                }
+            }
+        }
+        return Double.infinity
+    }
+
+    func highwayNameFromId(_ id: String) -> String {
+        let parts = id.components(separatedBy: "-")
+        for part in parts {
+            if part.hasPrefix("N"), let num = Int(part.dropFirst()) {
+                return "國道\(num)號"
+            }
+        }
+        return "國道"
     }
 
     func parseName(_ id: String, fallback: String) -> String {
@@ -178,6 +258,7 @@ struct HighwaySectionListView: View {
     func load() async {
         isLoading = true
         errorMessage = nil
+        nearestInfo = nil
         do {
             sections = try await HighwayService.shared.fetchSections()
         } catch {
