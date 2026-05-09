@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0197BA522FAF08DD00BD3B7B /* SpeedCameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197BA512FAF08DD00BD3B7B /* SpeedCameraViewModel.swift */; };
+		0197BA542FAF134F00BD3B7B /* DriveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197BA532FAF134F00BD3B7B /* DriveViewModel.swift */; };
 		BCD23D5B2F9D16A000A00271 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D5A2F9D16A000A00271 /* LocationManager.swift */; };
 		BCD23D5D2FA3A0BE00A00271 /* ParkingMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D5C2FA3A0BD00A00271 /* ParkingMapView.swift */; };
 		BCD23D602FA3A7D000A00271 /* HighwaySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD23D5E2FA3A7CF00A00271 /* HighwaySection.swift */; };
@@ -62,6 +63,7 @@
 
 /* Begin PBXFileReference section */
 		0197BA512FAF08DD00BD3B7B /* SpeedCameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedCameraViewModel.swift; sourceTree = "<group>"; };
+		0197BA532FAF134F00BD3B7B /* DriveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveViewModel.swift; sourceTree = "<group>"; };
 		BCD23D5A2F9D16A000A00271 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		BCD23D5C2FA3A0BD00A00271 /* ParkingMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParkingMapView.swift; path = Views/ParkingMapView.swift; sourceTree = "<group>"; };
 		BCD23D5E2FA3A7CF00A00271 /* HighwaySection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighwaySection.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 		BCE18E012F9D0B010054D0E3 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				0197BA532FAF134F00BD3B7B /* DriveViewModel.swift */,
 				0197BA512FAF08DD00BD3B7B /* SpeedCameraViewModel.swift */,
 				BCE18E022F9D0B010054D0E3 /* ParkingViewModel.swift */,
 			);
@@ -336,6 +339,7 @@
 				BCD23D642FA3A7F000A00271 /* HighwayService.swift in Sources */,
 				BCD23D652FA3A7F000A00271 /* SpeedCameraService.swift in Sources */,
 				0197BA522FAF08DD00BD3B7B /* SpeedCameraViewModel.swift in Sources */,
+				0197BA542FAF134F00BD3B7B /* DriveViewModel.swift in Sources */,
 				BCE18E0A2F9D0B010054D0E3 /* CarPark.swift in Sources */,
 				BCE18E0C2F9D0B010054D0E3 /* ParkingListView.swift in Sources */,
 				BCD23D602FA3A7D000A00271 /* HighwaySection.swift in Sources */,
