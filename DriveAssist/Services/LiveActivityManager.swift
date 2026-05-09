@@ -48,6 +48,8 @@ class LiveActivityManager: ObservableObject {
                 nearestParking: String = "", parkingAvail: Int = 0,
                 parkingSpots: [ParkingSpot] = [],
                 triggerAlert: Bool = false) async {
+        guard let activity else { return }
+
         let isWarning = speedLimit > 0 && currentSpeed > speedLimit
         let state = DriveAssistAttributes.ContentState(
             speedLimit: speedLimit,
@@ -61,8 +63,7 @@ class LiveActivityManager: ObservableObject {
             parkingSpots: parkingSpots
         )
 
-        let staleDate = triggerAlert ? Date().addingTimeInterval(3) : nil
-        let content = ActivityContent(state: state, staleDate: staleDate)
+        let content = ActivityContent(state: state, staleDate: nil)
 
         if triggerAlert && cameraLimit > 0 {
             let road = cameraRoad.isEmpty ? "" : "\n\(cameraRoad)"
@@ -71,9 +72,10 @@ class LiveActivityManager: ObservableObject {
                 body: "速限 \(cameraLimit) km/h　距離 \(cameraDistance) m\(road)",
                 sound: .default
             )
-            await activity?.update(content, alertConfiguration: alertConfig)
+            await activity.update(content, alertConfiguration: alertConfig)
+            print("Live Activity 警戒觸發：\(cameraLimit) km/h \(cameraDistance) m")
         } else {
-            await activity?.update(content)
+            await activity.update(content)
         }
     }
 

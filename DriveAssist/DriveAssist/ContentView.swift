@@ -26,6 +26,7 @@ struct ContentView: View {
 struct DriveView: View {
     @StateObject private var vm = DriveViewModel()
     @StateObject private var manager = LiveActivityManager.shared
+    @AppStorage("autoStartEnabled") private var autoStartEnabled = false
 
     var body: some View {
         NavigationView {
@@ -101,9 +102,33 @@ struct DriveView: View {
                         .multilineTextAlignment(.center)
                 }
 
+                // 自動啟動 Toggle
+                Divider().padding(.horizontal, 32)
+
+                Toggle(isOn: $autoStartEnabled) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("車速 >10 km/h 自動啟動")
+                            .font(.subheadline)
+                        Text("偵測到行駛時自動進入行車模式")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .padding(.horizontal, 32)
+                .onChange(of: autoStartEnabled) { enabled in
+                    if enabled && !vm.isActive {
+                        vm.startAutoMonitor()
+                    }
+                }
+
                 Spacer()
             }
             .navigationTitle("行車助手")
+            .onAppear {
+                if autoStartEnabled && !vm.isActive {
+                    vm.startAutoMonitor()
+                }
+            }
         }
     }
 }

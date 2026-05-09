@@ -4,6 +4,30 @@ struct HighwaySectionListView: View {
     @State private var sections: [HighwaySection] = []
     @State private var isLoading = false
     @State private var errorMessage: String?
+    @State private var directionFilter: DirectionFilter = .all
+
+    enum DirectionFilter: String, CaseIterable {
+        case all = "全部"
+        case northEast = "北上／東行"
+        case southWest = "南下／西行"
+    }
+
+    var filteredSections: [HighwaySection] {
+        switch directionFilter {
+        case .all:
+            return sections
+        case .northEast:
+            return sections.filter { sec in
+                let id = sec.id.uppercased()
+                return id.contains("-N-") || id.contains("-E-")
+            }
+        case .southWest:
+            return sections.filter { sec in
+                let id = sec.id.uppercased()
+                return id.contains("-S-") || id.contains("-W-")
+            }
+        }
+    }
 
     var body: some View {
         NavigationView {
@@ -13,54 +37,93 @@ struct HighwaySectionListView: View {
                 } else if let error = errorMessage {
                     Text("錯誤：\(error)").foregroundColor(.red)
                 } else {
-                    List(sections) { sec in
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(parseName(sec.id, fallback: sec.name))
-                                    .font(.headline)
-                                    .lineLimit(2)
-                                Label("\(sec.speed) km/h", systemImage: "car.fill")
-                                    .font(.subheadline)
-                                    .foregroundColor(speedColor(sec.level))
+                    VStack(spacing: 0) {
+                        Picker("方向", selection: $directionFilter) {
+                            ForEach(DirectionFilter.allCases, id: \.self) { f in
+                                Text(f.rawValue).tag(f)
                             }
-                            Spacer()
-                            levelBadge(sec.level)
                         }
-                        .padding(.vertical, 4)
+                        .pickerStyle(.segmented)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+
+                        List(filteredSections) { sec in
+                            HStack {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(parseName(sec.id, fallback: sec.name))
+                                        .font(.headline)
+                                        .lineLimit(2)
+                                    Label("\(sec.speed) km/h", systemImage: "car.fill")
+                                        .font(.subheadline)
+                                        .foregroundColor(speedColor(sec.level))
+                                }
+                                Spacer()
+                                levelBadge(sec.level)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                        .refreshable { await load() }
                     }
-                    .refreshable { await load() }
                 }
             }
             .navigationTitle("高速公路路況")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        Task { await loadNearestFirst() }
+                    } label: {
+                        Image(systemName: "location.circle")
+                    }
+                }
+            }
             .task { await load() }
         }
     }
 
+    // 依公里數由小到大排序
+    func loadNearestFirst() async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            let all = try await HighwayService.shared.fetchSections()
+            sections = all.sorted { a, b in
+                kmFromId(a.id) < kmFromId(b.id)
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
+
+    // 從 ID 解析公里數，例如 VD-N1-N-86.120-M-LOOP → 86.12
+    func kmFromId(_ id: String) -> Double {
+        let parts = id.components(separatedBy: "-")
+        for (i, part) in parts.enumerated() {
+            if part.hasPrefix("N"), Int(part.dropFirst()) != nil {
+                if i + 2 < parts.count, let km = Double(parts[i + 2]) {
+                    return km
+                }
+            }
+        }
+        return Double.infinity
+    }
+
     func parseName(_ id: String, fallback: String) -> String {
-        // 若 name 已有中文且不是 VD 開頭直接用
         if !fallback.hasPrefix("VD") && fallback.range(of: "[\\u4e00-\\u9fff]", options: .regularExpression) != nil {
             return fallback
         }
-
-        // ID 格式：VD-N1-N-86.120-M-LOOP
-        // parts[0]=VD, parts[1]=N1, parts[2]=N/S, parts[3]=86.120
         let parts = id.components(separatedBy: "-")
         guard parts.count >= 3 else { return fallback }
-
-        // 找國道編號（格式 N1, N3, N5...）
         var highway = ""
         var direction = ""
         var km = ""
         var foundHighway = false
-
         for (i, part) in parts.enumerated() {
-            // 國道編號：N 開頭後接數字，長度 2-3
             if !foundHighway && part.count >= 2 && part.hasPrefix("N") {
                 let numStr = String(part.dropFirst())
                 if let num = Int(numStr) {
                     highway = "國道\(num)號"
                     foundHighway = true
-                    // 下一個 part 是方向
                     if i + 1 < parts.count {
                         switch parts[i + 1] {
                         case "N": direction = "北上"
@@ -70,7 +133,6 @@ struct HighwaySectionListView: View {
                         default: break
                         }
                     }
-                    // 再下一個是公里數
                     if i + 2 < parts.count, let d = Double(parts[i + 2]) {
                         km = String(format: "%.1f km", d)
                     }
@@ -78,7 +140,6 @@ struct HighwaySectionListView: View {
                 }
             }
         }
-
         if highway.isEmpty { return fallback }
         var result = highway
         if !direction.isEmpty { result += " \(direction)" }
