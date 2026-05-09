@@ -16,6 +16,7 @@ struct DriveAssistAttributes: ActivityAttributes {
         var isWarning: Bool
         var cameraLimit: Int
         var cameraDistance: Int
+        var cameraRoad: String
         var nearestParking: String
         var parkingAvail: Int
         var parkingSpots: [ParkingSpot]

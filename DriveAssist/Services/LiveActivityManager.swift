@@ -22,6 +22,7 @@ class LiveActivityManager: ObservableObject {
             isWarning: false,
             cameraLimit: 0,
             cameraDistance: 0,
+            cameraRoad: "",
             nearestParking: "",
             parkingAvail: 0,
             parkingSpots: []
@@ -43,8 +44,10 @@ class LiveActivityManager: ObservableObject {
 
     func update(speedLimit: Int, currentSpeed: Int,
                 cameraLimit: Int = 0, cameraDistance: Int = 0,
+                cameraRoad: String = "",
                 nearestParking: String = "", parkingAvail: Int = 0,
-                parkingSpots: [ParkingSpot] = []) async {
+                parkingSpots: [ParkingSpot] = [],
+                triggerAlert: Bool = false) async {
         let isWarning = speedLimit > 0 && currentSpeed > speedLimit
         let state = DriveAssistAttributes.ContentState(
             speedLimit: speedLimit,
@@ -52,12 +55,26 @@ class LiveActivityManager: ObservableObject {
             isWarning: isWarning,
             cameraLimit: cameraLimit,
             cameraDistance: cameraDistance,
+            cameraRoad: cameraRoad,
             nearestParking: nearestParking,
             parkingAvail: parkingAvail,
             parkingSpots: parkingSpots
         )
-        let content = ActivityContent(state: state, staleDate: nil)
-        await activity?.update(content)
+
+        let staleDate = triggerAlert ? Date().addingTimeInterval(3) : nil
+        let content = ActivityContent(state: state, staleDate: staleDate)
+
+        if triggerAlert && cameraLimit > 0 {
+            let road = cameraRoad.isEmpty ? "" : "\n\(cameraRoad)"
+            let alertConfig = AlertConfiguration(
+                title: "⚠️ 前方測速照相",
+                body: "速限 \(cameraLimit) km/h　距離 \(cameraDistance) m\(road)",
+                sound: .default
+            )
+            await activity?.update(content, alertConfiguration: alertConfig)
+        } else {
+            await activity?.update(content)
+        }
     }
 
     func stop() async {
@@ -67,6 +84,7 @@ class LiveActivityManager: ObservableObject {
             isWarning: false,
             cameraLimit: 0,
             cameraDistance: 0,
+            cameraRoad: "",
             nearestParking: "",
             parkingAvail: 0,
             parkingSpots: []

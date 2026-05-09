@@ -43,13 +43,22 @@ struct DirveassistWidgetLiveActivity: Widget {
                 DynamicIslandExpandedRegion(.bottom) {
                     VStack(spacing: 4) {
                         if context.state.cameraLimit > 0 {
-                            HStack {
-                                Image(systemName: "camera.fill")
-                                    .foregroundColor(.orange)
-                                Text("測速 \(context.state.cameraLimit) km/h")
-                                    .font(.caption)
-                                    .foregroundColor(.orange)
-                                Spacer()
+                            VStack(alignment: .leading, spacing: 2) {
+                                HStack {
+                                    Image(systemName: "camera.fill")
+                                        .foregroundColor(.orange)
+                                    Text("測速 \(context.state.cameraLimit) km/h　\(context.state.cameraDistance) m")
+                                        .font(.caption)
+                                        .foregroundColor(.orange)
+                                    Spacer()
+                                }
+                                if !context.state.cameraRoad.isEmpty {
+                                    Text(context.state.cameraRoad)
+                                        .font(.caption2)
+                                        .foregroundColor(.orange.opacity(0.8))
+                                        .lineLimit(1)
+                                        .padding(.leading, 20)
+                                }
                             }
                             .padding(.horizontal, 8)
                         }
@@ -154,7 +163,18 @@ struct LockScreenView: View {
             }
             Divider().background(Color.gray)
             VStack(alignment: .leading, spacing: 3) {
-                ForEach(context.state.parkingSpots.prefix(3), id: \.name) { spot in
+                if context.state.cameraLimit > 0 {
+                    HStack(spacing: 4) {
+                        Image(systemName: "camera.fill")
+                            .foregroundColor(.orange)
+                            .font(.system(size: 10))
+                        Text(!context.state.cameraRoad.isEmpty ? context.state.cameraRoad : "測速 \(context.state.cameraLimit) km/h")
+                            .font(.caption2)
+                            .foregroundColor(.orange)
+                            .lineLimit(1)
+                    }
+                }
+                ForEach(context.state.parkingSpots.prefix(2), id: \.name) { spot in
                     HStack(spacing: 4) {
                         Image(systemName: "parkingsign.circle.fill")
                             .foregroundColor(.green)
@@ -169,7 +189,7 @@ struct LockScreenView: View {
                             .foregroundColor(spot.avail > 10 ? .green : spot.avail > 0 ? .orange : .red)
                     }
                 }
-                if context.state.parkingSpots.isEmpty {
+                if context.state.parkingSpots.isEmpty && context.state.cameraLimit == 0 {
                     Text("無附近停車場")
                         .font(.caption2)
                         .foregroundColor(.gray)
