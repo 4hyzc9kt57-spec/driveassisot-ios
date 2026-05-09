@@ -19,9 +19,12 @@ class LiveActivityManager: ObservableObject {
         let state = DriveAssistAttributes.ContentState(
             speedLimit: 0,
             currentSpeed: 0,
+            isWarning: false,
+            cameraLimit: 0,
+            cameraDistance: 0,
             nearestParking: "",
             parkingAvail: 0,
-            isWarning: false
+            parkingSpots: []
         )
         let content = ActivityContent(state: state, staleDate: nil)
 
@@ -39,14 +42,19 @@ class LiveActivityManager: ObservableObject {
     }
 
     func update(speedLimit: Int, currentSpeed: Int,
-                nearestParking: String = "", parkingAvail: Int = 0) async {
+                cameraLimit: Int = 0, cameraDistance: Int = 0,
+                nearestParking: String = "", parkingAvail: Int = 0,
+                parkingSpots: [ParkingSpot] = []) async {
         let isWarning = speedLimit > 0 && currentSpeed > speedLimit
         let state = DriveAssistAttributes.ContentState(
             speedLimit: speedLimit,
             currentSpeed: currentSpeed,
+            isWarning: isWarning,
+            cameraLimit: cameraLimit,
+            cameraDistance: cameraDistance,
             nearestParking: nearestParking,
             parkingAvail: parkingAvail,
-            isWarning: isWarning
+            parkingSpots: parkingSpots
         )
         let content = ActivityContent(state: state, staleDate: nil)
         await activity?.update(content)
@@ -56,9 +64,12 @@ class LiveActivityManager: ObservableObject {
         let state = DriveAssistAttributes.ContentState(
             speedLimit: 0,
             currentSpeed: 0,
+            isWarning: false,
+            cameraLimit: 0,
+            cameraDistance: 0,
             nearestParking: "",
             parkingAvail: 0,
-            isWarning: false
+            parkingSpots: []
         )
         let content = ActivityContent(state: state, staleDate: nil)
         await activity?.end(content, dismissalPolicy: .immediate)
