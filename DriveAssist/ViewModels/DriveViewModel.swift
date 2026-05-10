@@ -1,4 +1,4 @@
-
+import Foundation
 import CoreLocation
 import Combine
 
@@ -9,7 +9,6 @@ class DriveViewModel: ObservableObject {
     @Published var parkingSpots: [ParkingSpot] = []
     @Published var isActive: Bool = false
 
-    // 自動啟動設定（AppStorage 在 ViewModel 用 UserDefaults 讀取）
     var autoStartEnabled: Bool {
         UserDefaults.standard.bool(forKey: "autoStartEnabled")
     }
@@ -19,24 +18,21 @@ class DriveViewModel: ObservableObject {
     private var lastParkingLocation: CLLocation?
     private var alertedCameraIds: Set<String> = []
 
-    // 警戒鎖定
     private var isAlertActive: Bool = false
     private var alertLockTask: Task<Void, Never>?
 
-    // 省電：靜止計數（每 5 秒一次，36 次 = 3 分鐘）
     private var stillTicks: Int = 0
     private var isPollingSuspended: Bool = false
 
     private let parkingUpdateDistance = 200.0
     private let parkingRadius = 1000
 
-    // 動態警戒範圍（依車速決定）
+    // 方位角容差縮小為 30 度，減少誤觸
+    private let azTolerance = 30
+
     private func alertRadius(for speed: Int) -> Int {
         speed < 60 ? 200 : 500
     }
-
-    // 方位角比對容差（度）
-    private let azTolerance = 45
 
     func start() {
         guard !isActive else { return }
@@ -56,14 +52,12 @@ class DriveViewModel: ObservableObject {
                 let speed = max(0, Int(loc.speed * 3.6))
                 currentSpeed = speed
 
-                // 自動啟動：車速 >10 時若因省電暫停則恢復
                 if speed > 10 && isPollingSuspended {
                     isPollingSuspended = false
                     stillTicks = 0
                     print("恢復 API polling")
                 }
 
-                // 靜止偵測：車速 = 0 累計 36 次（3 分鐘）暫停 polling
                 if speed == 0 {
                     stillTicks += 1
                     if stillTicks >= 36 && !isPollingSuspended {
@@ -74,7 +68,6 @@ class DriveViewModel: ObservableObject {
                     stillTicks = 0
                 }
 
-                // polling 暫停期間只更新車速
                 if isPollingSuspended {
                     await updateLiveActivity(cam: nearestCamera)
                     continue
@@ -96,7 +89,6 @@ class DriveViewModel: ObservableObject {
         }
     }
 
-    // 自動啟動監控（從外部呼叫，持續偵測車速）
     func startAutoMonitor() {
         guard !isActive else { return }
         locationManager.requestLocation()
@@ -136,12 +128,21 @@ class DriveViewModel: ObservableObject {
                 radius: radius
             )
 
-            // 方位角比對：取得目前行進方向
             let heading = loc.course  // -1 表示無效
+
             let filtered = cameras.filter { cam in
-                guard let az = cam.az, heading >= 0 else { return true }
+                guard let az = cam.az else { return true }
+
+                // 車速過低或 heading 無效時不觸發方位角比對
+                guard heading >= 0 && speed >= 5 else { return false }
+
                 let diff = abs(az - Int(heading))
                 let normalized = min(diff, 360 - diff)
+
+                // 對向排除：差距超過 120 度直接排除
+                if normalized > 120 { return false }
+
+                // 容差 30 度內才觸發
                 return normalized <= azTolerance
             }
 

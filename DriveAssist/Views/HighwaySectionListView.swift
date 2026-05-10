@@ -8,6 +8,7 @@ struct HighwaySectionListView: View {
     @State private var directionFilter: DirectionFilter = .all
     @State private var isSortingByGPS = false
     @State private var nearestInfo: String? = nil
+    @State private var userLocation: CLLocation? = nil
 
     enum DirectionFilter: String, CaseIterable {
         case all = "全部"
@@ -19,15 +20,47 @@ struct HighwaySectionListView: View {
         let merged = mergeSections(sections)
         switch directionFilter {
         case .all:
+            // 依距離排序
+            if let loc = userLocation {
+                return merged.sorted { a, b in
+                    distanceToSection(from: loc, section: a) < distanceToSection(from: loc, section: b)
+                }
+            }
             return merged
         case .northEast:
-            return merged
-                .filter { $0.id.uppercased().contains("-N-") || $0.id.uppercased().contains("-E-") }
-                .sorted { kmFromId($0.id) > kmFromId($1.id) }
+            // 北上：從使用者位置公里數往遞減排（數字越小越北）
+            let filtered = merged.filter {
+                let id = $0.id.uppercased()
+                return id.contains("-N-") || id.contains("-E-")
+            }
+            if let loc = userLocation {
+                // 找使用者在北上路段的最近公里數
+                let nearest = filtered
+                    .filter { $0.lat != nil && $0.lon != nil }
+                    .min { distanceToSection(from: loc, section: $0) < distanceToSection(from: loc, section: $1) }
+                let userKm = nearest.map { kmFromId($0.id) } ?? Double.infinity
+                // 從使用者位置往北（公里數遞減）
+                return filtered
+                    .filter { kmFromId($0.id) <= userKm }
+                    .sorted { kmFromId($0.id) > kmFromId($1.id) }
+            }
+            return filtered.sorted { kmFromId($0.id) > kmFromId($1.id) }
         case .southWest:
-            return merged
-                .filter { $0.id.uppercased().contains("-S-") || $0.id.uppercased().contains("-W-") }
-                .sorted { kmFromId($0.id) < kmFromId($1.id) }
+            // 南下：從使用者位置公里數往遞增排（數字越大越南）
+            let filtered = merged.filter {
+                let id = $0.id.uppercased()
+                return id.contains("-S-") || id.contains("-W-")
+            }
+            if let loc = userLocation {
+                let nearest = filtered
+                    .filter { $0.lat != nil && $0.lon != nil }
+                    .min { distanceToSection(from: loc, section: $0) < distanceToSection(from: loc, section: $1) }
+                let userKm = nearest.map { kmFromId($0.id) } ?? 0.0
+                return filtered
+                    .filter { kmFromId($0.id) >= userKm }
+                    .sorted { kmFromId($0.id) < kmFromId($1.id) }
+            }
+            return filtered.sorted { kmFromId($0.id) < kmFromId($1.id) }
         }
     }
 
@@ -89,7 +122,8 @@ struct HighwaySectionListView: View {
                     Button {
                         Task { await loadNearestFirst() }
                     } label: {
-                        Image(systemName: "location.circle")
+                        Image(systemName: userLocation != nil ? "location.circle.fill" : "location.circle")
+                            .foregroundColor(userLocation != nil ? .blue : .primary)
                     }
                 }
             }
@@ -120,7 +154,7 @@ struct HighwaySectionListView: View {
                 lat: base.lat,
                 lon: base.lon
             )
-        }.sorted { kmFromId($0.id) < kmFromId($1.id) }
+        }
     }
 
     func congestionLevel(_ speed: Int) -> Int {
@@ -138,22 +172,18 @@ struct HighwaySectionListView: View {
             let all = try await HighwayService.shared.fetchSections()
             let location = await getCurrentLocation()
             if let loc = location {
+                userLocation = loc
                 let nearest = all
                     .filter { $0.lat != nil && $0.lon != nil }
-                    .min { a, b in
-                        distanceToSection(from: loc, section: a) < distanceToSection(from: loc, section: b)
-                    }
+                    .min { distanceToSection(from: loc, section: $0) < distanceToSection(from: loc, section: $1) }
                 if let n = nearest {
                     let km = kmFromId(n.id)
                     let highway = highwayNameFromId(n.id)
                     nearestInfo = "目前位置約 \(highway) \(String(format: "%.1f", km)) km 附近"
-                    sections = all.sorted { a, b in
-                        distanceToSection(from: loc, section: a) < distanceToSection(from: loc, section: b)
-                    }
                 } else {
-                    sections = all
-                    nearestInfo = "無法比對座標，顯示預設排序"
+                    nearestInfo = "無法比對座標"
                 }
+                sections = all
             } else {
                 sections = all
                 errorMessage = "無法取得定位，顯示預設排序"
@@ -197,9 +227,15 @@ struct HighwaySectionListView: View {
     func kmFromId(_ id: String) -> Double {
         let parts = id.components(separatedBy: "-")
         for (i, part) in parts.enumerated() {
-            if part.hasPrefix("N"), Int(part.dropFirst()) != nil {
-                if i + 2 < parts.count, let km = Double(parts[i + 2]) {
-                    return km
+            // 支援 N1, N1H, N3A, N3K 等格式
+            if part.hasPrefix("N") && part.count >= 2 {
+                let suffix = String(part.dropFirst())
+                // 取出數字部分（忽略後綴字母如 H, A, K）
+                let numStr = suffix.prefix(while: { $0.isNumber })
+                if !numStr.isEmpty {
+                    if i + 2 < parts.count, let km = Double(parts[i + 2]) {
+                        return km
+                    }
                 }
             }
         }
@@ -209,28 +245,46 @@ struct HighwaySectionListView: View {
     func highwayNameFromId(_ id: String) -> String {
         let parts = id.components(separatedBy: "-")
         for part in parts {
-            if part.hasPrefix("N"), let num = Int(part.dropFirst()) {
-                return "國道\(num)號"
+            if part.hasPrefix("N") && part.count >= 2 {
+                let suffix = String(part.dropFirst())
+                let numStr = String(suffix.prefix(while: { $0.isNumber }))
+                let tag = String(suffix.drop(while: { $0.isNumber }))
+                if let num = Int(numStr) {
+                    switch tag {
+                    case "H": return "國道\(num)號高架"
+                    case "A", "K": return "國道\(num)號支線"
+                    default: return "國道\(num)號"
+                    }
+                }
             }
         }
         return "國道"
     }
 
     func parseName(_ id: String, fallback: String) -> String {
+        // 若 fallback 已有中文且不是 VD 開頭直接用
         if !fallback.hasPrefix("VD") && fallback.range(of: "[\\u4e00-\\u9fff]", options: .regularExpression) != nil {
             return fallback
         }
         let parts = id.components(separatedBy: "-")
         guard parts.count >= 3 else { return fallback }
+
         var highway = ""
         var direction = ""
         var km = ""
         var foundHighway = false
+
         for (i, part) in parts.enumerated() {
-            if !foundHighway && part.count >= 2 && part.hasPrefix("N") {
-                let numStr = String(part.dropFirst())
-                if let num = Int(numStr) {
-                    highway = "國道\(num)號"
+            if !foundHighway && part.hasPrefix("N") && part.count >= 2 {
+                let suffix = String(part.dropFirst())
+                let numStr = String(suffix.prefix(while: { $0.isNumber }))
+                let tag = String(suffix.drop(while: { $0.isNumber }))
+                if let num = Int(numStr), !numStr.isEmpty {
+                    switch tag {
+                    case "H": highway = "國道\(num)號高架"
+                    case "A", "K": highway = "國道\(num)號支線"
+                    default: highway = "國道\(num)號"
+                    }
                     foundHighway = true
                     if i + 1 < parts.count {
                         switch parts[i + 1] {
@@ -248,6 +302,7 @@ struct HighwaySectionListView: View {
                 }
             }
         }
+
         if highway.isEmpty { return fallback }
         var result = highway
         if !direction.isEmpty { result += " \(direction)" }
@@ -258,7 +313,6 @@ struct HighwaySectionListView: View {
     func load() async {
         isLoading = true
         errorMessage = nil
-        nearestInfo = nil
         do {
             sections = try await HighwayService.shared.fetchSections()
         } catch {
@@ -288,3 +342,4 @@ struct HighwaySectionListView: View {
             .cornerRadius(8)
     }
 }
+                      
