@@ -27,11 +27,27 @@ class DriveViewModel: ObservableObject {
     private let parkingUpdateDistance = 200.0
     private let parkingRadius = 1000
 
-    // 方位角容差縮小為 30 度，減少誤觸
+    // 方位角容差 30 度
     private let azTolerance = 30
 
     private func alertRadius(for speed: Int) -> Int {
         speed < 60 ? 200 : 500
+    }
+
+    // 方位角比對：接受正向（az）或反向（az±180）各 30 度容差
+    private func isHeadingMatch(az: Int, heading: Double) -> Bool {
+        let h = Int(heading)
+
+        // 正向比對
+        let diffForward = abs(az - h)
+        let normalizedForward = min(diffForward, 360 - diffForward)
+
+        // 反向比對（az+180，取模 360）
+        let azReverse = (az + 180) % 360
+        let diffReverse = abs(azReverse - h)
+        let normalizedReverse = min(diffReverse, 360 - diffReverse)
+
+        return normalizedForward <= azTolerance || normalizedReverse <= azTolerance
     }
 
     func start() {
@@ -128,22 +144,16 @@ class DriveViewModel: ObservableObject {
                 radius: radius
             )
 
-            let heading = loc.course  // -1 表示無效
+            let heading = loc.course
 
             let filtered = cameras.filter { cam in
                 guard let az = cam.az else { return true }
 
-                // 車速過低或 heading 無效時不觸發方位角比對
+                // 車速過低或 heading 無效時不觸發
                 guard heading >= 0 && speed >= 5 else { return false }
 
-                let diff = abs(az - Int(heading))
-                let normalized = min(diff, 360 - diff)
-
-                // 對向排除：差距超過 120 度直接排除
-                if normalized > 120 { return false }
-
-                // 容差 30 度內才觸發
-                return normalized <= azTolerance
+                // 支援雙向：正向或反向都接受
+                return isHeadingMatch(az: az, heading: heading)
             }
 
             nearestCamera = filtered.first

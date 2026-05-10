@@ -16,40 +16,45 @@ struct HighwaySectionListView: View {
         case southWest = "南下／西行"
     }
 
+    // 精確比對方向：取 ID 第3段（index 2）
+    func directionOfSection(_ id: String) -> String {
+        let parts = id.components(separatedBy: "-")
+        // ID 格式：VD-N3-N-109-... → parts[2] = "N"
+        guard parts.count >= 3 else { return "" }
+        return parts[2].uppercased()
+    }
+
     var filteredAndSorted: [HighwaySection] {
         let merged = mergeSections(sections)
         switch directionFilter {
         case .all:
-            // 依距離排序
             if let loc = userLocation {
-                return merged.sorted { a, b in
-                    distanceToSection(from: loc, section: a) < distanceToSection(from: loc, section: b)
+                return merged.sorted {
+                    distanceToSection(from: loc, section: $0) < distanceToSection(from: loc, section: $1)
                 }
             }
-            return merged
+            return merged.sorted { kmFromId($0.id) < kmFromId($1.id) }
+
         case .northEast:
-            // 北上：從使用者位置公里數往遞減排（數字越小越北）
             let filtered = merged.filter {
-                let id = $0.id.uppercased()
-                return id.contains("-N-") || id.contains("-E-")
+                let d = directionOfSection($0.id)
+                return d == "N" || d == "E"
             }
             if let loc = userLocation {
-                // 找使用者在北上路段的最近公里數
                 let nearest = filtered
                     .filter { $0.lat != nil && $0.lon != nil }
                     .min { distanceToSection(from: loc, section: $0) < distanceToSection(from: loc, section: $1) }
                 let userKm = nearest.map { kmFromId($0.id) } ?? Double.infinity
-                // 從使用者位置往北（公里數遞減）
                 return filtered
                     .filter { kmFromId($0.id) <= userKm }
                     .sorted { kmFromId($0.id) > kmFromId($1.id) }
             }
             return filtered.sorted { kmFromId($0.id) > kmFromId($1.id) }
+
         case .southWest:
-            // 南下：從使用者位置公里數往遞增排（數字越大越南）
             let filtered = merged.filter {
-                let id = $0.id.uppercased()
-                return id.contains("-S-") || id.contains("-W-")
+                let d = directionOfSection($0.id)
+                return d == "S" || d == "W"
             }
             if let loc = userLocation {
                 let nearest = filtered
@@ -131,14 +136,15 @@ struct HighwaySectionListView: View {
         }
     }
 
+    // 合併同位置路段：key = parts[0]-parts[1]-parts[2]-parts[3]
     func mergeSections(_ input: [HighwaySection]) -> [HighwaySection] {
         var groups: [String: [HighwaySection]] = [:]
         for sec in input {
             let parts = sec.id.components(separatedBy: "-")
-            var key = sec.id
-            if parts.count >= 4 {
-                key = "\(parts[0])-\(parts[1])-\(parts[2])-\(parts[3])"
-            }
+            // 取前4段作為 key，例如 VD-N3-N-109
+            let key = parts.count >= 4
+                ? parts.prefix(4).joined(separator: "-")
+                : sec.id
             groups[key, default: []].append(sec)
         }
         return groups.map { _, group in
@@ -224,16 +230,15 @@ struct HighwaySectionListView: View {
         }
     }
 
+    // 支援整數和小數格式：109 和 109.0 都能解析
     func kmFromId(_ id: String) -> Double {
         let parts = id.components(separatedBy: "-")
         for (i, part) in parts.enumerated() {
-            // 支援 N1, N1H, N3A, N3K 等格式
             if part.hasPrefix("N") && part.count >= 2 {
                 let suffix = String(part.dropFirst())
-                // 取出數字部分（忽略後綴字母如 H, A, K）
-                let numStr = suffix.prefix(while: { $0.isNumber })
-                if !numStr.isEmpty {
-                    if i + 2 < parts.count, let km = Double(parts[i + 2]) {
+                let numStr = String(suffix.prefix(while: { $0.isNumber }))
+                if !numStr.isEmpty && i + 2 < parts.count {
+                    if let km = Double(parts[i + 2]) {
                         return km
                     }
                 }
@@ -262,13 +267,11 @@ struct HighwaySectionListView: View {
     }
 
     func parseName(_ id: String, fallback: String) -> String {
-        // 若 fallback 已有中文且不是 VD 開頭直接用
         if !fallback.hasPrefix("VD") && fallback.range(of: "[\\u4e00-\\u9fff]", options: .regularExpression) != nil {
             return fallback
         }
         let parts = id.components(separatedBy: "-")
         guard parts.count >= 3 else { return fallback }
-
         var highway = ""
         var direction = ""
         var km = ""
@@ -286,6 +289,7 @@ struct HighwaySectionListView: View {
                     default: highway = "國道\(num)號"
                     }
                     foundHighway = true
+                    // 方向取 parts[i+1]（精確比對，不用 contains）
                     if i + 1 < parts.count {
                         switch parts[i + 1] {
                         case "N": direction = "北上"
@@ -342,4 +346,3 @@ struct HighwaySectionListView: View {
             .cornerRadius(8)
     }
 }
-                      
